@@ -120,7 +120,7 @@ Content-Length: 0
 """.encode('utf-8')
         return res
 
-    def dump_response(self, file_bytes, resource_url_path: str):
+    def dump_response(self, file_bytes, resource_url_path):
         file_type = resource_url_path.rsplit('.')[-1]
         if file_type not in self.MIME_EXT:
             file_type = 'plain'
@@ -133,7 +133,7 @@ Content-Length: {len(file_bytes)}
         res += file_bytes
         return res
 
-    def get_file_path(self, url_path: str):
+    def get_file_path(self, url_path):
         def fail_on_bad_file_path(file_path):
             if not path.exists(file_path):
                 raise NotFoundException()
@@ -155,7 +155,7 @@ Content-Length: {len(file_bytes)}
             fail_on_bad_file_path(file_path)
             return file_path
 
-    def read_bytes_from_file(self, file_path: str):
+    def read_bytes_from_file(self, file_path):
         try:
             with open(file_path, "rb") as f:
                 return f.read()
@@ -163,7 +163,7 @@ Content-Length: {len(file_bytes)}
             print("cannot open file at >>", file_path)
             raise ServerException(500, "failed to read file")
 
-    def get_url_path(self, buf: bytes):
+    def get_url_path(self, buf):
         # buf: byte string
         for line in buf.split(b"\r\n"):
             if line.startswith(b'GET') or line.startswith(b'HEAD'):
